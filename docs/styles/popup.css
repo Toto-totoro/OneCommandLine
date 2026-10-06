@@ -1,0 +1,43 @@
+body {
+    background-color: rgb(34, 34, 34);
+    display: grid;
+}
+
+header h1 {
+    text-align: center;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.element-wrapper {
+    padding: 0.5em 1em;
+    border-radius: 5px;
+    background-color: rgb(69, 69, 69);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: auto;
+}
+
+#duplicate-commands-tbl,
+#command-list-tbl {
+    border-radius: 5px;
+    background-color: rgb(69, 69, 69);
+}
+
+.element-text,
+#head-tr,
+td {
+    padding: 0.5em;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: small;
+}
+
+tr {
+    font-weight: lighter;
+}
+
+#head-tr {
+    font-weight: bold;
+}

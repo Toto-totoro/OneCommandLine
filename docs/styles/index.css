@@ -1,0 +1,30 @@
+::-webkit-scrollbar {
+    display: none;
+}
+
+body {
+    display: flex;
+    background-color: black;
+}
+
+#commandInput {
+    /* size */
+    width: 100%;
+    height: 100vh;
+    /* alignment */
+    /* margin: auto; */
+    /* style */
+    background-color: black;
+    border: none;
+    /* text-alignment */
+    padding-left: 1.2em;
+    /* text-style */
+    color: lightgray;
+    font-size: larger;
+    font-weight: bold;
+    font-family: monospace;
+}
+
+#commandInput:focus {
+    outline: none;
+}

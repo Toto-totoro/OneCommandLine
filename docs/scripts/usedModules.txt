@@ -1,0 +1,4 @@
+Module | Installation
+
+AudioDeviceCmdlets (currently unused) | installation on startup -> installModules.ps1
+nightmode.ps1 | pre-installed in scripts folder

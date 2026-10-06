@@ -1,0 +1,49 @@
+body {
+    background-color: rgb(34, 34, 34);
+    display: grid;
+}
+
+.element-wrapper {
+    margin-top: 0.5em;
+    padding: 0.5em 1em;
+    border-radius: 5px;
+    background-color: rgb(69, 69, 69);
+    display: flex;
+    align-items: center;
+}
+
+.element-text {
+    flex: 2;
+    float: left;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: small;
+}
+
+.element-action {
+    flex: 1;
+}
+
+.element-button {
+    float: right;
+    background-color: rgb(60, 60, 60);
+    color: white;
+    flex: 1;
+    border-radius: 5px;
+    border-style: solid;
+    padding: 0.3em 1em;
+    margin: 0.3em;
+    border-color: rgb(160, 160, 160);
+    transition: 0.3s;
+    font-size: small;
+    font-weight: bold;
+}
+
+button:hover.element-button {
+    background-color: rgb(88, 88, 88);
+}
+
+button:active.element-button {
+    background-color: rgb(70, 70, 70);
+}
