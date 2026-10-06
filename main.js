@@ -24,6 +24,9 @@ const htmlFiles = {
 const scripts = {
     installModules: path.join(__dirname, './docs/scripts/installModules.ps1')
 }
+const images = {
+    shadow_ico: path.join(__dirname, './docs/img/shadow.ico')
+}
 
 /**
  * Changes file paths to the current working directory.
@@ -54,7 +57,7 @@ if (devMode) {
 /***********/
 
 // make window variables globally available
-let mainWindow = null;
+let mainWin = null;
 let settingsWin = null;
 let shortcutSelectWin = null;
 let popupWin = null;
@@ -71,7 +74,7 @@ const createWindow = () => {
     const dimensions = mainScreen.size;
 
     // create Window
-    mainWindow = new BrowserWindow({
+    mainWin = new BrowserWindow({
         // dimensions
         width: dimensions.width,
         height: 60,
@@ -104,13 +107,13 @@ const createWindow = () => {
 
     // hide window on focus loss
     ipc.on('app-blur', () => {
-        if (!devMode) { mainWindow.hide(); return; }
-        devSettings['app-blur'] ? mainWindow.hide() : null;
+        if (!devMode) { mainWin.hide(); return; }
+        devSettings['app-blur'] ? mainWin.hide() : null;
     }) 
 
     // hide window on enter press
     ipc.on('command-submit', () => {
-        mainWindow.hide();
+        mainWin.hide();
     })
 
     // quit process when quit command is received
@@ -125,40 +128,42 @@ const createWindow = () => {
         app.quit();
     })
 
+    // DEV-COMMAND: resize
+    devMode ?
     ipc.on('resize-height', (event, height) => {
-        mainWindow.setResizable(true);
-        mainWindow.setSize(dimensions.width, Number(height), false);
-        mainWindow.setResizable(false);
-    });
+        mainWin.setResizable(true);
+        mainWin.setSize(dimensions.width, Number(height), false);
+        mainWin.setResizable(false);
+    }) : null;
 
-    ipc.handle('dev-mode?', () => devMode)
+    ipc.handle('dev-mode?', () => devMode);
 
     // open up OCL settings when settings command is received
     ipc.on('open-settings', () => {
         if (settingsWin === null || settingsWin.isDestroyed()) createSettingsWindow();
         else { settingsWin.focus() }
-    })
+    });
 
     // create Popup window preemptively (but not shown) so it's ready when needed
     createPopupWindow();
 
 
     // load html index file into the window
-    mainWindow.loadFile(path.join(__dirname, htmlFiles.index));
+    mainWin.loadFile(path.join(__dirname, htmlFiles.index));
 
     // create windows system tray with 'Quit' option
-    // tray = new Tray('');
-    // const contextMenu = Menu.buildFromTemplate([{
-    //     label: 'Quit',
-    //     click: () => {
-    //         app.quit();
-    //     }
-    // }])
-    // tray.setToolTip('OneCommandLine')
-    // tray.setContextMenu(contextMenu)
+    tray = new Tray(images.shadow_ico);
+    const contextMenu = Menu.buildFromTemplate([{
+        label: 'Quit',
+        click: () => {
+            popupWin.destroy();
+            app.quit();
+        }
+    }])
+    tray.setToolTip('OneCommandLine')
+    tray.setContextMenu(contextMenu)
 
-    installPowerShellModules();
-    if (devMode) { installNodeModules(); }
+    // installPowerShellModules(); deprecated
 
     // reads existing shortcutKey || opens window to set shortcutKey
     readShortcutKey();
@@ -274,7 +279,7 @@ const createPopupWindow = () => {
     });
 
     ipc.on('display-command-list', async(e, args) => {
-        mainWindow.webContents.send('get-command-list');
+        mainWin.webContents.send('get-command-list');
     });
 
 
@@ -296,10 +301,12 @@ const createPopupWindow = () => {
 
     /* custom */
 
+    // DEV-COMMAND: resize
+    devMode ?
     ipc.on('resize-popup', (event, args) => {
         //if (args[0] < 600) args[0] = 600;
         popupWin.setContentSize(args[0], args[1]);
-    });
+    }) : null;
 
     ipc.on('show-popup', () => {
         popupWin.show();
@@ -331,7 +338,7 @@ const readShortcutKey = () => {
         shortcutSelectWindow();
     } else {
         globalShortcut.register(settingsJson.shortcutKey, () => {
-            mainWindow.show();
+            mainWin.show();
         });
     }
 }
@@ -349,7 +356,7 @@ const setShortcutKey = (key) => {
     }
     // register new shortcut
     globalShortcut.register(key, () => {
-        mainWindow.show();
+        mainWin.show();
     });
     // set new shortcut key
     settingsJson.shortcutKey = key;
@@ -360,32 +367,7 @@ const setShortcutKey = (key) => {
     }
 }
 
-
-/**
- * This should only be used for dev versions,
- * since .exe exports have all modules included.
- */
-const installNodeModules = async() => {
-    const rawSettingsJson = fs.readFileSync(jsonFiles.settings);
-    let settingsJson = JSON.parse(rawSettingsJson);
-
-    if (settingsJson.installed === undefined) {
-        settingsJson.installed = {};
-        fs.writeFileSync(jsonFiles.settings, JSON.stringify(settingsJson, null, 2));
-        await installNodeModules();
-    }
-
-    if (settingsJson.installed.nodeModules == true) { return }
-
-    sudo.exec('npm install', { name: 'nodeInstall' }, (error) => {
-        error && console.log(error);
-
-        if (error !== undefined) { return }
-        settingsJson.installed.nodeModules = true;
-        fs.writeFileSync(jsonFiles.settings, JSON.stringify(settingsJson, null, 2));
-    });
-}
-
+//TODO: isolate ps-module installation so that they're installed in the commands where they are used
 /**
  * Installs PS modules needed in different functions of OCL
  * @returns 

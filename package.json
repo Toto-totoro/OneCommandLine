@@ -1,37 +1,51 @@
 {
-    "name": "onecommandline",
-    "version": "0.0.5",
-    "description": "A simple command line.<br> \r Press one <code>customizable</code> button to open up a small one line window that supports simple commands:<br>\r - <code>br [value]</code> - set the brightness of your monitor\r - <code>settings</code> - opens up the settings menu",
-    "main": "main.js",
-    "build": {
-        "appId": "com.phantomica.onecommandline"
-    },
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "electron .",
-        "pack": "electron-builder --dir",
-        "dist": "electron-builder"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/phantomica/OneCommandLine.git"
-    },
-    "author": "phantomica",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/phantomica/OneCommandLine/issues"
-    },
-    "homepage": "https://github.com/phantomica/OneCommandLine#readme",
-    "devDependencies": {
-        "electron": "^26.0.0"
-    },
-    "dependencies": {
-        "brightness": "^3.0.0",
-        "find-process": "^1.4.7",
-        "loudness": "^0.4.1",
-        "node-powershell": "^5.0.1",
-        "require-all": "^3.0.0",
-        "sudo-prompt": "^9.2.1",
-        "wmi-client": "^0.5.0"
-    }
+  "name": "onecommandline",
+  "version": "0.0.6",
+  "description": "A simple command line.<br> \r Press one <code>customizable</code> button to open up a small one line window that supports simple commands:<br>\r - <code>br [value]</code> - set the brightness of your monitor\r - <code>settings</code> - opens up the settings menu",
+  "main": "main.js",
+  "build": {
+    "appId": "com.toto.onecommandline"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron-forge start",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Toto-totoro/OneCommandLine.git"
+  },
+  "author": "Tom Schäfer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Toto-totoro/OneCommandLine/issues"
+  },
+  "homepage": "https://github.com/Toto-totoro/OneCommandLine#readme",
+  "devDependencies": {
+    "@electron-forge/cli": "^7.4.0",
+    "@electron-forge/maker-deb": "^7.4.0",
+    "@electron-forge/maker-rpm": "^7.4.0",
+    "@electron-forge/maker-squirrel": "^7.4.0",
+    "@electron-forge/maker-zip": "^7.4.0",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.4.0",
+    "@electron-forge/plugin-fuses": "^7.4.0",
+    "@electron/fuses": "^1.8.0",
+    "electron": "^26.0.0"
+  },
+  "dependencies": {
+    "brightness": "^3.0.0",
+    "cors": "^2.8.5",
+    "electron-squirrel-startup": "^1.0.1",
+    "express": "^4.18.3",
+    "find-process": "^1.4.7",
+    "loudness": "^0.4.1",
+    "node-powershell": "^5.0.1",
+    "pubnub": "^7.6.1",
+    "require-all": "^3.0.0",
+    "sudo-prompt": "^9.2.1",
+    "wmi-client": "^0.5.0"
+  }
 }
