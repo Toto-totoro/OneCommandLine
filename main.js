@@ -29,22 +29,9 @@ const images = {
 }
 
 /**
- * Changes file paths to the current working directory.
- * If this throws an error it's running in test mode and returns true.
  * @returns {boolean} true if in dev mode, false otherwise
  */
-const isDevMode = () => {
-
-    try {
-        fs.readFileSync("./resources/app/docs/settings.json");
-        return false;
-
-    } catch (e) {
-        console.warn("Running in Test Mode\n" + e);
-        return true;
-    }
-
-}
+const isDevMode = () => !app.isPackaged;
 
 const devMode = isDevMode();
 const devSettings = {};

@@ -3,12 +3,8 @@ const process = require('process');
 const fs = require("fs");
 const path = require("path");
 
-/*
- 0 => directory path for fs
- 1 => directory path for require
-*/
-const commandsDir = ['./docs/src/commands/', './src/commands/'];
-const devCommandsDir = ['./docs/src/commands/dev', './src/commands/dev/'];
+const commandsDir = path.join(__dirname, '/src/commands');
+const devCommandsDir = path.join(commandsDir, 'dev');
 
 const loadedModules = {};
 const commandList = [];
@@ -84,27 +80,22 @@ const fileImportError = (fileName) => {
  * => modules are stored in loadedModules  
  * => objects from loadedModules are stored in commandList  
  * => duplicates are filtered out
- * @param {string[]} directory
- * The first element of the array will be read by fs.readdir 
- * so it either needs to be an absolute path or a relative path starting from the installation folder.
- * It should only be relative if the directory is within the installation folder.  
- * If the first element is an absolute path there is no second element needed.  
- * Otherwise it should be the same as the first element but starting from the docs folder (which is in the installation folder).
- *   
- * @example
- * const directory = ['./docs/mycommandfolder', './mycommandfolder']
+ * @param {string} directory absolute path to the commands directory
  */
 const importCommands = (directory) => {
-    fs.readdir(directory[0], (err, files) => {
+    console.log("Importing commands from " + directory);
+    fs.readdir(directory, (err, files) => {
+        if (err) {
+            fileImportError(directory);
+            console.error(err);
+            invalidCommandsPopup();
+            return;
+        }
         files = files.filter(f => path.extname(f).toLowerCase() === '.js');
         for (let i = 0; i < files.length; i++) {
             const fileName = files[i];
             try {
-                if(directory[0].startsWith('.')){
-                    loadedModules[fileName] = require(path.join(__dirname, directory[1], fileName));
-                } else{
-                    loadedModules[fileName] = require(path.join(directory[0], fileName));
-                }
+                loadedModules[fileName] = require(path.join(directory, fileName));
             } catch (error) {
                 fileImportError(fileName);
                 console.error(error);
@@ -126,8 +117,6 @@ const importCommands = (directory) => {
 ipc.invoke('dev-mode?').then((devMode) => {
     if(devMode){
         importCommands(devCommandsDir);
-    }else{
-        commandsDir[0] = commandsDir[0].replace('./', './resources/app/');
     }
     importCommands(commandsDir);
 })
