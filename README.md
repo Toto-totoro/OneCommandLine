@@ -2,7 +2,7 @@
 Work In Progress<br>
 <br>
 A simple command line.<br>
-Press one `customizable` button to open up a small one line window<br>
+Press one *customizable* button to open up a small one line window<br>
 that supports simple commands:<br>
 - `quit | exit` - terminate OneCommandLine
 - `restart` - restart OneCommandLine
@@ -16,6 +16,15 @@ that supports simple commands:<br>
 - `system [operation: {shutdown, restart, sleep | sleepmode}]` - shutdown computer, restart computer or activate computer sleepmode
 - ...
 <br>
+
+## Installation
+Prequisits: NodeJS version 22
+1. Clone
+2. run `npm install`
+3. use as dev `npm start` or
+4. package to program `npm run make` - the program is in ./out/onecommandline-win32-x64
+
+## Add custom commands
 Custom commands can also be added:<br>
 1. create your own .js file<br>
 2. create an object by the following template:
