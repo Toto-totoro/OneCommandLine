@@ -8,5 +8,5 @@
 
 ## Reporting a Vulnerability
 
-1. Write an e-mail to phantomica.code@gmail.com
+1. Write an e-mail to tschaefer.acc@gmail.com
 2. Use GitHubs private vulnerability report function
